@@ -19,7 +19,7 @@ class AminoAcidLL{
     this.codons = AminoAcidResources.getCodonListForAminoAcid(this.aminoAcid);
     this.counts = new int[codons.length];
     this.next = null;
-
+    n
   }
 
   /********************************************************************************************/
@@ -30,10 +30,9 @@ class AminoAcidLL{
    */
   private void addCodon(String inCodon){
 
-    if(codons)
+
 
   }
-
 
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */

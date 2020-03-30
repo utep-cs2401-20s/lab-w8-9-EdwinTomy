@@ -19,7 +19,7 @@ class AminoAcidLL{
     this.codons = AminoAcidResources.getCodonListForAminoAcid(this.aminoAcid);
     this.counts = new int[codons.length];
     this.next = null;
-    n
+
   }
 
   /********************************************************************************************/
@@ -30,7 +30,7 @@ class AminoAcidLL{
    */
   private void addCodon(String inCodon){
 
-
+    if(codons[i].next == null)
 
   }
 

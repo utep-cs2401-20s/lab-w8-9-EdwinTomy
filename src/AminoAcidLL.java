@@ -30,7 +30,16 @@ class AminoAcidLL{
    */
   private void addCodon(String inCodon){
 
-    if(codons[i].next == null)
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon))
+      increaseCount(inCodon);
+    else if(next != null){
+
+    }
+
+  }
+
+  private void increaseCount(String inCodon){
+
 
   }
 

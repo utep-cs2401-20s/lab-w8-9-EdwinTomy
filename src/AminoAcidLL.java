@@ -30,23 +30,32 @@ class AminoAcidLL{
    */
   private void addCodon(String inCodon){
 
-    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon))
-      increaseCount(inCodon);
-    else if(next != null){
-
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)) {
+      for (int i = 0; i < codons.length; i++) {
+        if (codons[i].equals(inCodon))
+          counts[i]++;
+      }
+    }else if(next != null){
+      next.addCodon(inCodon);
+    }else{
+      next = new AminoAcidLL(inCodon);
+      for (int i = 0; i < codons.length; i++) {
+        if (codons[i].equals(inCodon))
+          counts[i]++;
+      }
     }
-
-  }
-
-  private void increaseCount(String inCodon){
-
 
   }
 
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
   private int totalCount(){
-    return 0;
+
+    int sum = 0;
+    for(int i = 0; i < counts.length; i++)
+        sum += counts[i];
+    return sum;
+
   }
 
   /********************************************************************************************/
@@ -72,13 +81,29 @@ class AminoAcidLL{
   /* Recursive method that finds the differences in **Amino Acid** counts. 
    * the list *must* be sorted to use this method */
   public int aminoAcidCompare(AminoAcidLL inList){
-    return 0;
+
+    if(!inList.isSorted())
+      inList.sort(inList);
+
+    if(inList == null){
+      return totalCount();
+    }
+
+    if(AminoAcid == null){
+      return totalCount();
+    }
+
+
   }
 
   /********************************************************************************************/
   /* Same ad above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
+
+    if(!inList.isSorted())
+      inList.sort(inList);
+
     return 0;
   }
 
@@ -106,6 +131,8 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
   public static AminoAcidLL createFromRNASequence(String inSequence){
+    
+
     return null;
   }
 

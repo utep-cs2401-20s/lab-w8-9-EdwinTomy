@@ -132,42 +132,84 @@ class AminoAcidLL{
   /* Static method for generating a linked list from an RNA sequence */
   public static AminoAcidLL createFromRNASequence(String inSequence) {
 
+    if(inSequence.length() < 3)
+      return null;
+
     String inCodon = inSequence.substring(0, 3);
+
+    if(inCodon.equals("UGA") || inCodon.equals("UAG") || inCodon.equals("UAA"))
+      return null;
+
     AminoAcidLL inList = new AminoAcidLL(inCodon);
+    return createHelper(inSequence, inList);
+  }
+
+  public static AminoAcidLL createHelper(String inSequence, AminoAcidLL inListStart){
+
+    AminoAcidLL inList = inListStart;
+
+    if(inSequence.length() < 3)
+      return null;
+
+    String inCodon = inSequence.substring(0, 3);
     char aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
 
-    while(inList.next != null){
+    if(inCodon.equals("UGA") || inCodon.equals("UAG") || inCodon.equals("UAA"))
+      return null;
+
+    boolean done = false;
+    while(!done){
 
       if(inList.aminoAcid == aminoAcid){
         for (int i = 0; i < inList.codons.length; i++) {
           if (inList.codons[i].equals(inCodon))
             inList.counts[i]++;
-        }
+        }done = true;
 
       }else if(inList.next == null){
         inList.next = new AminoAcidLL(inCodon);
         for (int i = 0; i < inList.codons.length; i++) {
           if (inList.codons[i].equals(inCodon))
             inList.counts[i]++;
-        }
+        }done = true;
 
       }else{
         inList = inList.next;
       }
-
     }
 
-    return null;
-  }
-
-  public static AminoAcidLL createHelper(String inSequence){
+    return createHelper(inSequence.substring(3), inListStart);
 
   }
+
 
 
   /********************************************************************************************/
   /* sorts a list by amino acid character*/
   public static AminoAcidLL sort(AminoAcidLL inList){
+
+    AminoAcidLL inListStart = inList;
+
+    int size = 0;
+    AminoAcidLL resultHead = new AminoAcidLL();
+
+    while(inList != null){
+      size++;
+      inList = inList.next;
+    }
+    resultHead.next = inListStart;
+    AminoAcidLL previous = resultHead;
+    AminoAcidLL current = resultHead.next;
+
+    while(inList.aminoAcid > current.aminoAcid && current != null){
+      previous = previous.next;
+      current = current.next;
+    }
+    
+    while()
+
+
+
     return null;
   }
 }

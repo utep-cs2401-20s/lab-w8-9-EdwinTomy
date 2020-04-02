@@ -130,10 +130,38 @@ class AminoAcidLL{
 
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
-  public static AminoAcidLL createFromRNASequence(String inSequence){
-    
+  public static AminoAcidLL createFromRNASequence(String inSequence) {
+
+    String inCodon = inSequence.substring(0, 3);
+    AminoAcidLL inList = new AminoAcidLL(inCodon);
+    char aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
+
+    while(inList.next != null){
+
+      if(inList.aminoAcid == aminoAcid){
+        for (int i = 0; i < inList.codons.length; i++) {
+          if (inList.codons[i].equals(inCodon))
+            inList.counts[i]++;
+        }
+
+      }else if(inList.next == null){
+        inList.next = new AminoAcidLL(inCodon);
+        for (int i = 0; i < inList.codons.length; i++) {
+          if (inList.codons[i].equals(inCodon))
+            inList.counts[i]++;
+        }
+
+      }else{
+        inList = inList.next;
+      }
+
+    }
 
     return null;
+  }
+
+  public static AminoAcidLL createHelper(String inSequence){
+
   }
 
 

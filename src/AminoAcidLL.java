@@ -103,11 +103,12 @@ class AminoAcidLL{
 
     while(aminoAcid < inList.aminoAcid){
       diff += totalCount();
-      this = this.next;
+      next.aminoHelper(inList, diff);
     }
 
     if(aminoAcid == inList.aminoAcid){
-      next.aminoHelper(inList.next);
+      diff += totalDiff(inList);
+      next.aminoHelper(inList.next, diff);
     }
 
   }

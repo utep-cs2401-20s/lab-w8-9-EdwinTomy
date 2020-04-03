@@ -59,4 +59,65 @@ class AminoAcidResourcesTester{
     }
   }
 
+  @Test
+  public void constructorTest(){
+
+    System.out.println("Test case for AminoAcidLL()");
+    AminoAcidLL amino = new AminoAcidLL("GCC");
+    String[] expected = {"GCG","GCA","GCC","GCU"};
+
+    assertArrayEquals(expected, amino.codons);
+
+  }
+
+
+
+  @Test
+  public void createFromRNATest(){
+
+    System.out.println("Test case for createFromRNASequence()");
+
+    AminoAcidLL zero = new AminoAcidLL();
+    zero.next = AminoAcidLL.createFromRNASequence("CCGAUGAAC");
+
+
+
+    assertEquals('P', zero.next.aminoAcid);
+
+  }
+
+
+
+
+  @Test
+  public void isSortedTest(){
+
+    System.out.println("Test case for isSorted()");
+    AminoAcidLL first = new AminoAcidLL("GCG");
+    AminoAcidLL second = new AminoAcidLL("GAC");
+    AminoAcidLL third = new AminoAcidLL("UGC");
+
+    first.next = second;
+    second.next = third;
+
+    assertEquals(false, first.isSorted());
+
+  }
+
+  @Test
+  public void sortTest(){
+
+    System.out.println("Test case for sort()");
+    AminoAcidLL first = new AminoAcidLL("GCG");
+    AminoAcidLL second = new AminoAcidLL("GAC");
+    AminoAcidLL third = new AminoAcidLL("UGC");
+
+    first.next = second;
+    second.next = third;
+    first.sort(first);
+
+    assertEquals(true, first.isSorted());
+
+  }
+
 }

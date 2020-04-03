@@ -113,9 +113,7 @@ class AminoAcidLL{
       diff += totalDiff(inList);
       diff += next.aminoHelper(inList.next, diff);
     }
-
     return diff;
-
   }
 
   /********************************************************************************************/
@@ -152,9 +150,7 @@ class AminoAcidLL{
       diff += codonDiff(inList);
       diff += next.codonHelper(inList.next, diff);
     }
-
     return diff;
-
   }
 
 
@@ -212,12 +208,13 @@ class AminoAcidLL{
 
     if(next == null)
       return true;
-    if(aminoAcid < next.aminoAcid)
+    if(aminoAcid > next.aminoAcid)
       return false;
     if(next.next != null)
-      next.isSorted();
+      return next.isSorted();
 
     return true;
+
   }
 
 
@@ -235,6 +232,7 @@ class AminoAcidLL{
 
     AminoAcidLL inList = new AminoAcidLL(inCodon);
     return createHelper(inSequence, inList);
+
   }
 
   public static AminoAcidLL createHelper(String inSequence, AminoAcidLL inListStart){
@@ -250,26 +248,7 @@ class AminoAcidLL{
     if(inCodon.equals("UGA") || inCodon.equals("UAG") || inCodon.equals("UAA"))
       return null;
 
-    boolean done = false;
-    while(!done){
-
-      if(inList.aminoAcid == aminoAcid){
-        for (int i = 0; i < inList.codons.length; i++) {
-          if (inList.codons[i].equals(inCodon))
-            inList.counts[i]++;
-        }done = true;
-
-      }else if(inList.next == null){
-        inList.next = new AminoAcidLL(inCodon);
-        for (int i = 0; i < inList.codons.length; i++) {
-          if (inList.codons[i].equals(inCodon))
-            inList.counts[i]++;
-        }done = true;
-
-      }else{
-        inList = inList.next;
-      }
-    }
+    inList.addCodon(inCodon);
 
     return createHelper(inSequence.substring(3), inListStart);
 

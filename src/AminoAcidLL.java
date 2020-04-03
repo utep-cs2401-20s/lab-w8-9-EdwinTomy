@@ -62,7 +62,9 @@ class AminoAcidLL{
   /* helper method for finding the list difference on two matching nodes
   *  must be matching, but this is not tracked */
   private int totalDiff(AminoAcidLL inList){
+
     return Math.abs(totalCount() - inList.totalCount());
+
   }
 
 
@@ -71,7 +73,7 @@ class AminoAcidLL{
   *  must be matching, but this is not tracked */
   private int codonDiff(AminoAcidLL inList){
     int diff = 0;
-    for(int i=0; i<codons.length; i++){
+    for(int i=0; i < codons.length; i++){
       diff += Math.abs(counts[i] - inList.counts[i]);
     }
     return diff;
@@ -85,14 +87,28 @@ class AminoAcidLL{
     if(!inList.isSorted())
       inList.sort(inList);
 
-    if(inList == null){
-      return totalCount();
+    if(!this.isSorted())
+      this.sort(this);
+
+    return aminoHelper(inList, 0);
+
+  }
+
+  public int aminoHelper(AminoAcidLL inList, int diff){
+
+    while(aminoAcid > inList.aminoAcid){
+      diff += inList.totalCount();
+      inList = inList.next;
     }
 
-    if(AminoAcid == null){
-      return totalCount();
+    while(aminoAcid < inList.aminoAcid){
+      diff += totalCount();
+      this = this.next;
     }
 
+    if(aminoAcid == inList.aminoAcid){
+      next.aminoHelper(inList.next);
+    }
 
   }
 
@@ -104,27 +120,72 @@ class AminoAcidLL{
     if(!inList.isSorted())
       inList.sort(inList);
 
-    return 0;
+    if(!this.isSorted())
+      this.sort(this);
+
   }
 
 
   /********************************************************************************************/
   /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
   public char[] aminoAcidList(){
-    return new char[]{};
+
+    char[] letters = new char[size()];
+    aminoAcidListHelper(letters, 0);
+    return letters;
+
+  }
+
+  public void aminoAcidListHelper(char[] letters, int index){
+
+    letters[index] = aminoAcid;
+    if(next == null)
+      return;
+    next.aminoAcidListHelper(letters, index + 1);
+
+  }
+
+  public int size(){
+
+    if(next == null)
+      return 1;
+    return 1 + next.size();
+
   }
 
   /********************************************************************************************/
   /* Recursively returns the total counts of amino acids in the order that they are in in the linked list. */
   public int[] aminoAcidCounts(){
-    return new int[]{};
+
+    int[] totalAmino = new int[size()];
+    aminoAcidCountsHelper(totalAmino, 0);
+    return totalAmino;
+
   }
+
+  public void aminoAcidCountsHelper(int[] totalAmino, int index){
+
+    totalAmino[index] = totalCount();
+    if(next == null)
+      return;
+    next.aminoAcidCountsHelper(totalAmino, index + 1);
+
+  }
+
 
 
   /********************************************************************************************/
   /* recursively determines if a linked list is sorted or not */
   public boolean isSorted(){
-    return false;
+
+    if(next == null)
+      return true;
+    if(aminoAcid < next.aminoAcid)
+      return false;
+    if(next.next != null)
+      next.isSorted();
+
+    return true;
   }
 
 
@@ -190,26 +251,23 @@ class AminoAcidLL{
 
     AminoAcidLL inListStart = inList;
 
-    int size = 0;
     AminoAcidLL resultHead = new AminoAcidLL();
+    resultHead.next = inList;
 
-    while(inList != null){
-      size++;
+    while(inList.next != null) {
+
       inList = inList.next;
+      AminoAcidLL previous = resultHead;
+      AminoAcidLL current = resultHead.next;
+
+      while (inList.aminoAcid > current.aminoAcid && current != null) {
+        previous = previous.next;
+        current = current.next;
+
+      }
+      previous.next = inList;
+
     }
-    resultHead.next = inListStart;
-    AminoAcidLL previous = resultHead;
-    AminoAcidLL current = resultHead.next;
-
-    while(inList.aminoAcid > current.aminoAcid && current != null){
-      previous = previous.next;
-      current = current.next;
-    }
-    
-    while()
-
-
-
-    return null;
+    return resultHead.next;
   }
 }

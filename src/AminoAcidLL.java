@@ -96,20 +96,25 @@ class AminoAcidLL{
 
   public int aminoHelper(AminoAcidLL inList, int diff){
 
-    while(aminoAcid > inList.aminoAcid){
+    if(this == null && inList == null)
+      return diff;
+
+    while(this == null || aminoAcid > inList.aminoAcid){
       diff += inList.totalCount();
       inList = inList.next;
     }
 
-    while(aminoAcid < inList.aminoAcid){
+    while(inList == null || aminoAcid < inList.aminoAcid){
       diff += totalCount();
-      next.aminoHelper(inList, diff);
+      diff += next.aminoHelper(inList, diff);
     }
 
     if(aminoAcid == inList.aminoAcid){
       diff += totalDiff(inList);
-      next.aminoHelper(inList.next, diff);
+      diff += next.aminoHelper(inList.next, diff);
     }
+
+    return diff;
 
   }
 
@@ -123,6 +128,32 @@ class AminoAcidLL{
 
     if(!this.isSorted())
       this.sort(this);
+
+    return codonHelper(inList, 0);
+
+  }
+
+  public int codonHelper(AminoAcidLL inList, int diff){
+
+    if(this == null && inList == null)
+      return diff;
+
+    while(this == null || aminoAcid > inList.aminoAcid){
+      diff += inList.totalCount();
+      inList = inList.next;
+    }
+
+    while(inList == null || aminoAcid < inList.aminoAcid){
+      diff += totalCount();
+      diff += next.codonHelper(inList, diff);
+    }
+
+    if(aminoAcid == inList.aminoAcid){
+      diff += codonDiff(inList);
+      diff += next.codonHelper(inList.next, diff);
+    }
+
+    return diff;
 
   }
 

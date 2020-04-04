@@ -35,7 +35,6 @@ class AminoAcidResourcesTester{
         }
       }
     }
-
   }
 
   @Test
@@ -59,6 +58,7 @@ class AminoAcidResourcesTester{
     }
   }
 
+  //Test case for constructor: PASSED
   @Test
   public void constructorTest(){
 
@@ -70,25 +70,103 @@ class AminoAcidResourcesTester{
 
   }
 
-
-
+  //The following test cases also test for createFromRNASequence();
+  //Test case for aminoAcidList(): PASSED
   @Test
-  public void createFromRNATest(){
+  public void aminoAcidListTest(){
 
-    System.out.println("Test case for createFromRNASequence()");
-
-    AminoAcidLL zero = new AminoAcidLL();
-    zero.next = AminoAcidLL.createFromRNASequence("CCGAUGAAC");
+    System.out.println("Test case for aminoAcidList()");
+    AminoAcidLL head = AminoAcidLL.createFromRNASequence("CCGAUGAAC");
 
 
-
-    assertEquals('P', zero.next.aminoAcid);
+    assertArrayEquals(new char[]{'P', 'M', 'N'}, head.aminoAcidList());
 
   }
 
+  //Test case for aminoAcidsCounts(): PASSED
+  @Test
+  public void aminoAcidCountsTest(){
+
+    System.out.println("Test case for aminoAcidCounts()");
+    AminoAcidLL head = AminoAcidLL.createFromRNASequence("CCGAUGAACCCAAAUCCCCUGCUA");
+
+    assertArrayEquals(new int[]{3, 1, 2, 2}, head.aminoAcidCounts());
+
+  }
+
+  //Test case for aminoAcidCompare(): PASSED
+  @Test
+  public void aminoAcidCompareTest(){
+
+    System.out.println("Test case for aminoAcidCompare()");
+    AminoAcidLL headOne = AminoAcidLL.createFromRNASequence("UGCGACGAGUUC");
+    AminoAcidLL headTwo = AminoAcidLL.createFromRNASequence("GCAUGUGAUGAAUUUGGA");
+
+    assertEquals(2, headOne.aminoAcidCompare(headTwo));
+
+  }
+
+  //Test case for codonCompare(): PASSED
+  @Test
+  public void codonCompareTest(){
+
+    System.out.println("Test case for codonCompare()");
+    AminoAcidLL headOne = AminoAcidLL.createFromRNASequence("UGCGACGAGUUC");
+    AminoAcidLL headTwo = AminoAcidLL.createFromRNASequence("GCAUGUGAUGAAUUUGGA");
+
+    assertEquals(10, headOne.codonCompare(headTwo));
+
+  }
+
+  //The following test cases also test for createFromRNASequence() with stop condons;
+  //Test case for aminoAcidList(): PASSED
+  @Test
+  public void aminoAcidListTestX(){
+
+    System.out.println("Test case for aminoAcidList() with stop");
+    AminoAcidLL head = AminoAcidLL.createFromRNASequence("CCGAUGAACUGACCG");
 
 
+    assertArrayEquals(new char[]{'P', 'M', 'N'}, head.aminoAcidList());
 
+  }
+
+  //Test case for aminoAcidsCounts(): PASSED
+  @Test
+  public void aminoAcidCountsTestX(){
+
+    System.out.println("Test case for aminoAcidCounts() with stop");
+    AminoAcidLL head = AminoAcidLL.createFromRNASequence("CCGAUGAACCCAAAUCCCCUGCUAUAGCCGCCGCCG");
+
+    assertArrayEquals(new int[]{3, 1, 2, 2}, head.aminoAcidCounts());
+
+  }
+
+  //Test case for aminoAcidCompare(): PASSED
+  @Test
+  public void aminoAcidCompareTestX(){
+
+    System.out.println("Test case for aminoAcidCompare() with stop");
+    AminoAcidLL headOne = AminoAcidLL.createFromRNASequence("UGCGACGAGUUCUAAUGCUGC");
+    AminoAcidLL headTwo = AminoAcidLL.createFromRNASequence("GCAUGUGAUGAAUUUGGAUAAGGAGGA");
+
+    assertEquals(2, headOne.aminoAcidCompare(headTwo));
+
+  }
+
+  //Test case for codonCompare(): PASSED
+  @Test
+  public void codonCompareTestX(){
+
+    System.out.println("Test case for codonCompare() with stop");
+    AminoAcidLL headOne = AminoAcidLL.createFromRNASequence("UGCGACGAGUUCUAAUGC");
+    AminoAcidLL headTwo = AminoAcidLL.createFromRNASequence("GCAUGUGAUGAAUUUGGAUAAUGU");
+
+    assertEquals(10, headOne.codonCompare(headTwo));
+
+  }
+
+  //Test case for isSorted(): PASSED
   @Test
   public void isSortedTest(){
 
@@ -104,6 +182,7 @@ class AminoAcidResourcesTester{
 
   }
 
+  //Test case for sort(): PASSED
   @Test
   public void sortTest(){
 

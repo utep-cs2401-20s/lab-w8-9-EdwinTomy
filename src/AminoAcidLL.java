@@ -35,15 +35,19 @@ class AminoAcidLL{
         if (codons[i].equals(inCodon))
           counts[i]++;
       }
+
     }else if(next != null){
       next.addCodon(inCodon);
+
     }else{
       next = new AminoAcidLL(inCodon);
-      for (int i = 0; i < codons.length; i++) {
-        if (codons[i].equals(inCodon))
-          counts[i]++;
+      for (int i = 0; i < next.codons.length; i++) {
+        if(next.codons[i].equals(inCodon)) {
+          next.counts[i]++;
+        }
       }
     }
+
 
   }
 
@@ -96,23 +100,40 @@ class AminoAcidLL{
 
   public int aminoHelper(AminoAcidLL inList, int diff){
 
-    if(this == null && inList == null)
-      return diff;
-
-    while(this == null || aminoAcid > inList.aminoAcid){
+    while(aminoAcid > inList.aminoAcid){
       diff += inList.totalCount();
-      inList = inList.next;
+      if(inList.next != null)
+        inList = inList.next;
     }
 
-    while(inList == null || aminoAcid < inList.aminoAcid){
+    while(aminoAcid < inList.aminoAcid){
       diff += totalCount();
-      diff += next.aminoHelper(inList, diff);
+      if(next != null)
+        diff = next.aminoHelper(inList, diff);
     }
 
     if(aminoAcid == inList.aminoAcid){
       diff += totalDiff(inList);
-      diff += next.aminoHelper(inList.next, diff);
+      if(next != null && inList.next != null)
+        diff = next.aminoHelper(inList.next, diff);
+      if(next == null && inList.next == null)
+        return diff;
     }
+
+    if(next == null){
+      while(inList.next != null){
+        inList = inList.next;
+        diff +=  inList.totalCount();
+      }
+    }
+
+    if(inList.next == null){
+      while(next != null){
+        next.totalCount();
+        diff += totalCount();
+      }
+    }
+
     return diff;
   }
 
@@ -133,23 +154,40 @@ class AminoAcidLL{
 
   public int codonHelper(AminoAcidLL inList, int diff){
 
-    if(this == null && inList == null)
-      return diff;
-
-    while(this == null || aminoAcid > inList.aminoAcid){
+    while(aminoAcid > inList.aminoAcid){
       diff += inList.totalCount();
-      inList = inList.next;
+      if(inList.next != null)
+        inList = inList.next;
     }
 
-    while(inList == null || aminoAcid < inList.aminoAcid){
+    while(aminoAcid < inList.aminoAcid){
       diff += totalCount();
-      diff += next.codonHelper(inList, diff);
+      if(next != null)
+        diff = next.codonHelper(inList, diff);
     }
 
     if(aminoAcid == inList.aminoAcid){
       diff += codonDiff(inList);
-      diff += next.codonHelper(inList.next, diff);
+      if(next != null && inList.next != null)
+        diff = next.codonHelper(inList.next, diff);
+      if(next == null && inList.next == null)
+        return diff;
     }
+
+    if(next == null){
+      while(inList.next != null){
+        inList = inList.next;
+        diff +=  inList.totalCount();
+      }
+    }
+
+    if(inList.next == null){
+      while(next != null){
+        next.totalCount();
+        diff += totalCount();
+      }
+    }
+
     return diff;
   }
 
@@ -231,6 +269,7 @@ class AminoAcidLL{
       return null;
 
     AminoAcidLL inList = new AminoAcidLL(inCodon);
+
     return createHelper(inSequence, inList);
 
   }
@@ -240,13 +279,12 @@ class AminoAcidLL{
     AminoAcidLL inList = inListStart;
 
     if(inSequence.length() < 3)
-      return null;
+      return inListStart;
 
     String inCodon = inSequence.substring(0, 3);
-    char aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
 
     if(inCodon.equals("UGA") || inCodon.equals("UAG") || inCodon.equals("UAA"))
-      return null;
+      return inListStart;
 
     inList.addCodon(inCodon);
 
